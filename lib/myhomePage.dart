@@ -24,23 +24,64 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: Text(widget.title),
+        title: Text(
+          widget.title,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
+        centerTitle: true,
+        elevation: 0,
       ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-              child: Container(
-                  height: 150,
-                  width: double.maxFinite,
-                  color: const Color.fromARGB(255, 6, 124, 32),
-                  child: Image.asset(
-                    'images/makeup.png',
-                  )),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Theme.of(context).colorScheme.primary,
+                    Theme.of(context).colorScheme.primary.withOpacity(0.8),
+                  ],
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 80,
+                    width: 80,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40),
+                      color: Colors.white,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.asset(
+                        'images/makeup.png',
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'Makeupothèque',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
             ),
             ListTile(
-              title: const Text('Maybelline'),
+              title: Text('Maybelline'),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -52,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
-              title: const Text('Nyx'),
+              title: Text('Nyx'),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -64,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
-              title: const Text('Orly'),
+              title: Text('Orly'),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -76,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
-              title: const Text('afficher Produit'),
+              title: Text('Afficher Produit'),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -87,70 +128,172 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 );
               },
-            )
+            ),
           ],
         ),
       ),
       body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            // Image principale sur toute la largeur
             Container(
-                height: 200,
-                width: double.infinity,
-                child: Image.asset(
-                  'images/makeup.jpeg',
-                )),
-            Padding(padding: EdgeInsets.only(top: 20)),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const Maybelline(title: 'Maybelline'),
-                  ),
-                );
-              },
-              child: const Text('Maybelline'),
+              height: 250,
+              width: double.infinity,
+              child: Image.asset(
+                'images/makeup.jpeg',
+                fit: BoxFit.cover,
+              ),
             ),
-            Padding(padding: EdgeInsets.only(top: 20)),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const Nyx(title: 'Nyx'),
-                  ),
-                );
-              },
-              child: const Text('Nyx'),
+
+            // Titre de bienvenue
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Text(
+                'Bienvenue dans votre Makeupothèque',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                textAlign: TextAlign.center,
+              ),
             ),
-            Padding(padding: EdgeInsets.only(top: 20)),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const Orly(title: 'Orly'),
-                  ),
-                );
-              },
-              child: const Text('Orly'),
+
+            // Description
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Text(
+                'Découvrez notre collection de produits de maquillage et gérez vos favoris',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[600],
+                  height: 1.5,
+                ),
+                textAlign: TextAlign.center,
+              ),
             ),
-            Padding(padding: EdgeInsets.only(top: 20)),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        const AfficheProduit(title: 'Afficher Produit'),
+
+            SizedBox(height: 30),
+
+            // Grille de boutons
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                children: [
+                  // Première ligne de boutons
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildBrandCard(
+                          context,
+                          'Maybelline',
+                          Colors.pink,
+                          () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const Maybelline(title: 'Maybelline'),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 15),
+                      Expanded(
+                        child: _buildBrandCard(
+                          context,
+                          'Nyx',
+                          Colors.purple,
+                          () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Nyx(title: 'Nyx'),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                );
-              },
-              child: const Text('Afficher Produit'),
+
+                  SizedBox(height: 15),
+
+                  // Deuxième ligne de boutons
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildBrandCard(
+                          context,
+                          'Orly',
+                          Colors.orange,
+                          () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Orly(title: 'Orly'),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 15),
+                      Expanded(
+                        child: _buildBrandCard(
+                          context,
+                          'Mes Produits',
+                          Colors.blue,
+                          () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const AfficheProduit(
+                                    title: 'Afficher Produit'),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
+
+            SizedBox(height: 40),
           ],
+        ),
+      ),
+    );
+  }
+
+  // Widget pour les cartes de marques (sans icônes)
+  Widget _buildBrandCard(
+      BuildContext context, String title, Color color, VoidCallback onTap) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(15),
+        child: Container(
+          height: 100,
+          padding: EdgeInsets.all(15),
+          child: Center(
+            child: Text(
+              title,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Colors.grey[800],
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
         ),
       ),
     );
